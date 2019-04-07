@@ -43,4 +43,9 @@
 
 ### New in 1.0
 
+* Added regex native content processors to the Sdl.Community.Toolkit.FileType
+* Updated logic in the segment visitor from the Sdl.Community.Toolkit.LanguagePlatform to identify embedded tags
+
+### New in 1.1
+
 * Updated Toolkit.Core to correctly identify Multiterm installations; versions 2017 and 2019

@@ -55,6 +55,19 @@ namespace Sdl.Community.Toolkit.LanguagePlatform
 		}
 
 		/// <summary>
+		/// Retruns the SegmentPairInfo, which includes the LanguagePlatform representation of the ISegmentPair, e.g. the tokenized segment and word counts
+		/// </summary>
+		/// <param name="source">The source segment</param>
+		/// <param name="target">The target segment</param>
+		/// <returns>SegmentPairInfo</returns>
+		public SegmentPairInfo GetSegmentPairInfo(ISegment source, ISegment target)
+		{
+			return GetSegmentPairInfo(
+				SegmentVisitor(source, _temporaryTm.LanguageDirection.SourceLanguage).Segment,
+				SegmentVisitor(target, _temporaryTm.LanguageDirection.TargetLanguage).Segment);
+		}
+
+		/// <summary>
 		/// Attempts to delete any temporary files used during processing, e.g. the temporary TM
 		/// </summary>
 		public void CleanupTemporaryFiles()
@@ -71,14 +84,14 @@ namespace Sdl.Community.Toolkit.LanguagePlatform
 				{
 					throw new Exception($"Unable to delete translation memory {tmPath}\r\n" + ex.Message);
 				}
-			}			
+			}
 		}
 
 		private SegmentPairInfo GetSegmentPairInfo(Segment sourceSegment, Segment targetSegment)
 		{
 			if (sourceSegment.Elements.Count == 0)
 			{
-				return null;
+				sourceSegment.Elements.AddRange(targetSegment.Elements);
 			}
 
 			if (targetSegment.Elements.Count == 0)
@@ -145,7 +158,7 @@ namespace Sdl.Community.Toolkit.LanguagePlatform
 
 			return tmPath;
 		}
-		
+
 		private ImportResult AddTranslationUnit(Segment sourceSegment, Segment targetSegment)
 		{
 			if (_temporaryTm == null)
